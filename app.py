@@ -15,7 +15,9 @@ with open("data/CUB_200_2011/classes.txt") as f:
 
 
 model = get_model()
-model.load_state_dict(torch.load("models/model.pth", map_location="cpu"))
+from huggingface_hub import hf_hub_download
+model_path = hf_hub_download(repo_id="vvkon/bird-species-classifier", filename="model.pth")
+model.load_state_dict(torch.load(model_path, map_location="cpu"))
 model.eval()
 
 data_transforms = transforms.Compose([
