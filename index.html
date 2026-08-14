@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bird Analysis</title>
+    <style>
+        .preview-container {
+            margin-top: 15px;
+        }
+        #image-preview {
+            max-width: 300px;
+            max-height: 300px;
+            display: none; 
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <h2>Select an image to preview:</h2>
+    
+    <input type="file" id="image-input" accept="image/*">
+
+    <div class="preview-container">
+        <img id="image-preview" src="" alt="Image Preview">
+    </div>
+        <button onclick="predict()">Identify Bird</button>
+    <div id="results" style="display:none;">
+    <p id="species-result"></p>
+    <p id="confidence-result"></p>
+    </div>
+    <script>
+        const imageInput = document.getElementById('image-input');
+        const imagePreview = document.getElementById('image-preview');
+
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0]; 
+
+            if (file) {
+                const objectURL = URL.createObjectURL(file);
+                
+                imagePreview.src = objectURL;
+                imagePreview.style.display = 'block';
+            } else {
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+            }
+        });
+        async function predict() {
+    const file = imageInput.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+document.getElementById("species-result").textContent = "Species: " + data.species;
+document.getElementById("confidence-result").textContent = "Confidence: " + (data.confidence * 100).toFixed(2) + "%";
+document.getElementById("results").style.display = "block";}
+    </script>
+
+</body>
+</html>

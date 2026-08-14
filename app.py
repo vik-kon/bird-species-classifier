@@ -1,9 +1,10 @@
+from flask_cors import CORS
 import torch
 import sys
 sys.path.append("src")
 from torchvision import transforms
 from PIL import Image
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from model import get_model
 import os
 
@@ -26,7 +27,11 @@ data_transforms = transforms.Compose([
     ),
 ])
 app = Flask(__name__)
+CORS(app)
 
+@app.route("/")
+def index():
+    return send_from_directory(".", "index.html")
 @app.route("/predict", methods=["POST"])
 
 def predict():
@@ -35,7 +40,7 @@ def predict():
     img = Image.open(file).convert("RGB")
     img = data_transforms(img)
     img= img.unsqueeze(0)
-    with torch.no_grad():
+    with torch.no_grad():       
         output = model(img)
         predicted_idx = torch.argmax(output, dim=1).item()
         confidence = torch.softmax(output, dim = 1)[0][predicted_idx].item()
