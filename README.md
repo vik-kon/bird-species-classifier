@@ -3,7 +3,7 @@
 A bird species classifier that identifies 200 species from a photo using transfer learning on ResNet18, trained on the CUB-200-2011 dataset.
 
 ## Demo
-https://github.com/vvkon/bird-species-classifier/raw/main/demo.mp4
+[https://github.com/vvkon/bird-species-classifier/raw/main/demo.mp4](https://youtu.be/W5sea31q980)
 
 ## Model Details
 - Architecture: ResNet18 (fine-tuned)
