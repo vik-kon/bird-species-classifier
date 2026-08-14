@@ -9,7 +9,7 @@ from model import get_model
 import os
 
 class_name = []
-with open("data/CUB_200_2011/classes.txt") as f:
+with open("classes.txt") as f:
     for line in f:
         class_name.append(line.strip().split()[1])
 
